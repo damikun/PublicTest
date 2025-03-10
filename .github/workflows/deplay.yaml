@@ -19,8 +19,17 @@ jobs:
       - name: Update Podspec Version
         run: sed -i '' "s/spec.version      = \".*\"/spec.version      = \"$VERSION\"/g" MySDK.podspec
 
+      - name: Ensure License File Exists
+        run: |
+          if [ ! -f LICENSE ]; then
+            echo "MIT License" > LICENSE
+          fi
+
       - name: Install CocoaPods
         run: gem install cocoapods
+
+      - name: Extract MyLibrary.zip
+        run: unzip MyLibrary.zip -d .
 
       - name: Lint Podspec
         run: pod lib lint --allow-warnings --no-clean

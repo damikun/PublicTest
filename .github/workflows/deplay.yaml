@@ -1,0 +1,31 @@
+name: Deploy to CocoaPods
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Public Repo
+        uses: actions/checkout@v4
+
+      - name: Extract Version from Tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Update Podspec Version
+        run: sed -i '' "s/spec.version      = \".*\"/spec.version      = \"$VERSION\"/g" MySDK.podspec
+
+      - name: Install CocoaPods
+        run: gem install cocoapods
+
+      - name: Lint Podspec
+        run: pod lib lint --allow-warnings
+
+      - name: Publish to CocoaPods
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: pod trunk push MySDK.podspec --allow-warnings

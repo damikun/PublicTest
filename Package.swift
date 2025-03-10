@@ -17,7 +17,7 @@ let package = Package(
         .binaryTarget(
             name: "MyLibrary",
             url: "https://github.com/your-username/your-repo/releases/download/v1.0.0/MyLibrary.zip", 
-            checksum: "your-zip-file-checksum-here"
+            checksum: "863b30b73c3f97496a8ade78c1a58c1bb358b92fc5d1c3565f6f81317ceec76c"
         ),
     ]
 )
